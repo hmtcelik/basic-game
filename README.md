@@ -5,3 +5,4 @@ this project is my first pygame game, just tested something. But if you beginner
 
 
 ## Some screenshot in game :
+(will be uploaded when the project is finished)
