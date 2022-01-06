@@ -8,7 +8,7 @@ pygame.init()
 
 pygame.display.set_caption("my first game")
 
-WINDOW_SIZE = (600, 400)
+WINDOW_SIZE = (800, 520)
 
 
 screen = pygame.display.set_mode(WINDOW_SIZE, 0, 32)
@@ -37,13 +37,42 @@ game_map = [['0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0'
             ['1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1'],
             ['1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1']]
 
+def collision_test(rect, tiles):
+    hit_list = []
+    for tile in tiles:
+        if rect.colliderect(tile):
+            hit_list.append(tile)
+    return hit_list
+
+def move(rect, movement, tiles):
+    collision_types = {'top': False, 'bottom': False, 'right': False, 'left': False}
+    rect.x += movement[0]
+    hit_list = collision_test(rect, tiles)
+    for tile in hit_list:
+        if movement[0] > 0:
+            rect.right = tile.left
+            collision_types['right'] = True
+        elif movement[0] < 0:
+            rect.left = tile.right
+            collision_types['left'] = True
+    rect.y += movement[1]
+    hit_list = collision_test(rect, tiles)
+    for tile in hit_list:
+        if movement[1] > 0:
+            rect.bottom = tile.top
+            collision_types['bottom'] = True
+        elif movement[1] < 0:
+            rect.top = tile.bottom
+            collision_types['top'] = True
+    return rect, collision_types
+
 moving_right = False
 moving_left = False
 
-player_location = [50, 50]
 player_y_momentum = 0
+air_timer = 0
 
-player_rect = pygame.Rect(player_location[0], player_location[1], player_image.get_height(), player_image.get_width())
+player_rect = pygame.Rect(50,50, player_image.get_height(), player_image.get_width())
 test_rect = pygame.Rect(150,150,100,50) # meaning = (x, y, long side, short side)
 
 while True:
@@ -64,18 +93,26 @@ while True:
             x += 1
         y += 1
 
-    display.blit(player_image, player_location)
-
+    player_movement = [0,0]
+    if moving_right:
+        player_movement[0] += 2
+    if moving_left:
+        player_movement[0] += -2
+    player_movement[1] = player_y_momentum
     player_y_momentum += 0.2
-    player_location[1] += player_y_momentum
+    if player_y_momentum > 3:
+        player_y_momentum = 3
 
-    if moving_right == True:
-        player_location[0] += 4
-    if moving_left == True:
-        player_location[0] -= 4
+    player_rect, collisions = move(player_rect, player_movement, tile_rects)\
 
-    player_rect.x = player_location[0]
-    player_rect.y = player_location[1]
+    if collisions['bottom']:
+        player_y_momentum = 0
+        air_timer = 0
+    else:
+        air_timer += 1
+
+    display.blit(player_image, (player_rect.x, player_rect.y))
+
 
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -90,6 +127,12 @@ while True:
                 moving_right = True
             if event.key == K_a:
                 moving_left = True
+            if event.key == K_UP:
+                if air_timer < 20:
+                    player_y_momentum = -5
+            if event.key == K_w:
+                if air_timer < 20:
+                    player_y_momentum = -5
         if event.type == KEYUP: #keyup = when you break; pressing button on keybord so key up
             if event.key == K_RIGHT:
                 moving_right = False
