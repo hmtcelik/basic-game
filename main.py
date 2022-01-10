@@ -18,18 +18,21 @@ display = pygame.Surface((300, 200))
 player_image = pygame.image.load('images/player.png')
 player_image.set_colorkey((255,255,255))      # remove white color background on your character
 
-grass_image = pygame.image.load("images/grass.png")
-dirt_image = pygame.image.load("images/dirt.png")
+grass_image = pygame.image.load("images/grasstile.png")
+dirt_image = pygame.image.load("images/tiledirt.png")
+coin_image = pygame.image.load("images/coin.png")
+tree_image = pygame.image.load("images/tree.png")
+
 
 TILE_SIZE = grass_image.get_width()
 
 game_map = [['0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0'],
             ['0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0'],
             ['0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0'],
-            ['0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0'],
+            ['0','0','0','0','0','0','0','0','3','3','3','0','0','0','0','0','0','0','0'],
             ['0','0','0','0','0','0','0','2','2','2','2','2','0','0','0','0','0','0','0'],
-            ['0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0'],
-            ['2','2','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','2','2'],
+            ['0','3','0','0','4','0','0','0','0','0','0','0','0','0','0','0','0','3','0'],
+            ['2','2','0','0','0','0','0','0','3','3','3','0','0','0','0','0','0','2','2'],
             ['1','1','2','2','2','2','2','2','2','2','2','2','2','2','2','2','2','1','1'],
             ['1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1'],
             ['1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1'],
@@ -88,6 +91,10 @@ while True:
                 display.blit(dirt_image, (x * TILE_SIZE, y * TILE_SIZE))
             if tile == '2':
                 display.blit(grass_image, (x * TILE_SIZE, y * TILE_SIZE))
+            if tile == '3':
+                display.blit(coin_image, (x * TILE_SIZE, y * TILE_SIZE))
+            if tile == '4':
+                display.blit(tree_image, (x * TILE_SIZE, y * TILE_SIZE))
             if tile != '0':
                 tile_rects.append(pygame.Rect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE))
             x += 1
