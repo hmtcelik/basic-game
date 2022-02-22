@@ -22,6 +22,11 @@ grass_image = pygame.image.load("images/grasstile.png")
 dirt_image = pygame.image.load("images/tiledirt.png")
 coin_image = pygame.image.load("images/coin.png")
 tree_image = pygame.image.load("images/tree.png")
+left_bottom_dirt = pygame.image.load("images/dirttilebottomleft.png")
+right_bottom_dirt = pygame.image.load("images/dirttilebottomright.png")
+right_dirt = pygame.image.load("images/dirttilerightt.png")
+left_dirt = pygame.image.load("images/dirttileleft.png")
+bottom_dirt = pygame.image.load("images/dirttilebottom.png")
 
 
 TILE_SIZE = grass_image.get_width()
@@ -110,6 +115,17 @@ while True:
                 display.blit(dirt_image, (x * TILE_SIZE-scroll[0], y * TILE_SIZE-scroll[1]))
             if tile == '2':
                 display.blit(grass_image, (x * TILE_SIZE-scroll[0], y * TILE_SIZE-scroll[1]))
+            if tile == '3':
+                display.blit(left_bottom_dirt, (x * TILE_SIZE-scroll[0], y * TILE_SIZE-scroll[1]))
+            if tile == '4':
+                display.blit(right_bottom_dirt, (x * TILE_SIZE-scroll[0], y * TILE_SIZE-scroll[1]))
+            if tile == '5':
+                display.blit(right_dirt, (x * TILE_SIZE-scroll[0], y * TILE_SIZE-scroll[1]))
+            if tile == '6':
+                display.blit(left_dirt, (x * TILE_SIZE-scroll[0], y * TILE_SIZE-scroll[1]))
+            if tile == '7':
+                display.blit(bottom_dirt, (x * TILE_SIZE-scroll[0], y * TILE_SIZE-scroll[1]))
+
             if tile != '0':
                 tile_rects.append(pygame.Rect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE))
             x += 1
